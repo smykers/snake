@@ -94,9 +94,77 @@ class Game {
 
         ctx.drawImage(img.bg, 0, 0);
         ctx.drawImage(img.fr, fruit.t * 50, 0, 50, 50, fruit.x * 50, fruit.y * 50, 50, 50);
-        snake.seg.forEach((cseg, i) => {
-            ctx.fillStyle = "#f22";
-            ctx.fillRect(cseg.x * 50, cseg.y * 50, 50, 50);
+        snake.seg.forEach((cseg, i, arr) => {
+            // ctx.fillStyle = "#f22";
+            // ctx.fillRect(cseg.x * 50, cseg.y * 50, 50, 50);
+
+            if (i == 0) {
+                let nseg = snake.seg[i + 1];
+                if (cseg.x - nseg.x == 1 || cseg.x - nseg.x < -1) {
+                    ctx.drawImage(img.sn, 200, 50, 50, 50, cseg.x * 50, cseg.y * 50, 50, 50);
+                } else if (cseg.x - nseg.x == -1 || cseg.x - nseg.x > 1) {
+                    ctx.drawImage(img.sn, 200, 0, 50, 50, cseg.x * 50, cseg.y * 50, 50, 50);
+                } else if (cseg.x - nseg.y == 1 || cseg.y - nseg.y < -1) {
+                    ctx.drawImage(img.sn, 150, 0, 50, 50, cseg.x * 50, cseg.y * 50, 50, 50);
+                } else if (cseg.y - nseg.y == -1 || cseg.y - nseg.y > 1) {
+                    ctx.drawImage(img.sn, 150, 50, 50, 50, cseg.x * 50, cseg.y * 50, 50, 50);
+                }
+
+            } else if (i == arr.length - 1) {
+                let pseg = snake.seg[i - 1];
+                if (cseg.x - pseg.x == 1 || cseg.x - pseg.x < -1) {
+                    ctx.drawImage(img.sn, 50, 100, 50, 50, cseg.x * 50, cseg.y * 50, 50, 50);
+                } else if (cseg.x - pseg.x == -1 || cseg.x - pseg.x > 1) {
+                    ctx.drawImage(img.sn, 150, 100, 50, 50, cseg.x * 50, cseg.y * 50, 50, 50);
+                } else if (cseg.x - pseg.y == 1 || cseg.y - pseg.y < -1) {
+                    ctx.drawImage(img.sn, 100, 100, 50, 50, cseg.x * 50, cseg.y * 50, 50, 50);
+                } else if (cseg.y - pseg.y == -1 || cseg.y - pseg.y > 1) {
+                    ctx.drawImage(img.sn, 100, 0, 50, 50, cseg.x * 50, cseg.y * 50, 50, 50);
+                }
+            } else {
+                let nseg = snake.seg[i + 1];
+                let pseg = snake.seg[i - 1];
+
+                if ((cseg.x - nseg.x == 1 && cseg.x - pseg.x == -1) ||
+                    (cseg.x - pseg.x == 1 && cseg.x - nseg.x == -1) ||
+                    (cseg.x - nseg.x <= -1 && cseg.x - pseg.x <= -1) ||
+                    (cseg.x - nseg.x >= 1 && cseg.x - pseg.x >= 1)) {
+                    ctx.drawImage(img.sn, 50, 50, 50, 50, cseg.x * 50, cseg.y * 50, 50, 50);
+                } else if ((cseg.y - nseg.y == 1 && cseg.y - pseg.y == -1) ||
+                    (cseg.y - pseg.y == 1 && cseg.y - nseg.y == -1) ||
+                    (cseg.y - nseg.y <= -1 && cseg.y - pseg.y <= -1) ||
+                    (cseg.y - nseg.y >= 1 && cseg.y - pseg.y >= 1)) {
+                    ctx.drawImage(img.sn, 50, 0, 50, 50, cseg.x * 50, cseg.y * 50, 50, 50);
+                } else if ((cseg.x - nseg.x == 1 && cseg.y - pseg.y == 1) ||
+                    (cseg.x - pseg.x == 1 && cseg.y - nseg.y == 1) ||
+                    (cseg.x - nseg.x == 1 && cseg.y - pseg.y < -1) ||
+                    (cseg.x - pseg.x == 1 && cseg.y - nseg.y < -1) || 
+                    (cseg.x - nseg.x < -1 && cseg.y -pseg.y == 1) ||
+                    (cseg.x - pseg.x < -1 && cseg.y - nseg.y == 1)){
+                        ctx.drawImage(img.sn, 100, 50, 50, 50, cseg.x * 50, cseg.y * 50, 50, 50);
+                    }else if ((cseg.x - nseg.x == 1 && cseg.y - pseg.y == -1) ||
+                    (cseg.x - pseg.x == 1 && cseg.y - nseg.y == -1) ||
+                    (cseg.x - nseg.x == 1 && cseg.y - pseg.y > 1) ||
+                    (cseg.x - pseg.x == 1 && cseg.y - nseg.y > 1) || 
+                    (cseg.x - nseg.x < -1 && cseg.y -pseg.y == -1) ||
+                    (cseg.x - pseg.x < -1 && cseg.y - nseg.y == -1)){
+                        ctx.drawImage(img.sn, 100, 0, 50, 50, cseg.x * 50, cseg.y * 50, 50, 50);
+                    }else if ((cseg.x - nseg.x == -1 && cseg.y - pseg.y == 1) ||
+                    (cseg.x - pseg.x == -1 && cseg.y - nseg.y == 1) ||
+                    (cseg.x - nseg.x == -1 && cseg.y - pseg.y < -1) ||
+                    (cseg.x - pseg.x == -1 && cseg.y - nseg.y < -1) || 
+                    (cseg.x - nseg.x > 1 && cseg.y -pseg.y == 1) ||
+                    (cseg.x - pseg.x > 1 && cseg.y - nseg.y == 1)){
+                        ctx.drawImage(img.sn, 0, 50, 50, 50, cseg.x * 50, cseg.y * 50, 50, 50);
+                    }else if ((cseg.x - nseg.x == -1 && cseg.y - pseg.y == -1) ||
+                    (cseg.x - pseg.x == -1 && cseg.y - nseg.y == -1) ||
+                    (cseg.x - nseg.x == -1 && cseg.y - pseg.y > 1) ||
+                    (cseg.x - pseg.x == -1 && cseg.y - nseg.y > 1) || 
+                    (cseg.x - nseg.x > 1 && cseg.y -pseg.y == -1) ||
+                    (cseg.x - pseg.x > 1 && cseg.y - nseg.y == -1)){
+                        ctx.drawImage(img.sn, 0, 0, 50, 50, cseg.x * 50, cseg.y * 50, 50, 50);
+                    }
+            }
         });
     }
 
